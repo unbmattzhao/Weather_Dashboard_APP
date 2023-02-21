@@ -24,7 +24,7 @@ var formSubmitHandler = function(event) {
 };
 
 var getCityData = function (cityName) {
-  var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
+  var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
  fetch(apiUrl)
   // * create a function to check whether there is a response with the fetch API method, and take actions when there is/not a response.
   
@@ -81,7 +81,7 @@ var getCityData = function (cityName) {
 searchFormEl.addEventListener('submit', formSubmitHandler);        
 
 var displayWhetherData = function(cityName){
-  var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
+  var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
   fetch(apiUrl)
   .then(function(response){    
     response.json()
