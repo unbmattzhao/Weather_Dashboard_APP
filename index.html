@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./res/css/style.css">
+  <script defer src="./res/js/script.js"></script>
+  <title>Weather Dashboard</title>
+</head>
+<body>
+  <header>
+    <h1>Weather Dashboard</h1>
+  </header>
+
+  <div class="searchContainer">
+    <div id="searchArea">
+        <form action="" type="text"  id="searchForm">
+          <label for="cityInput">
+            <h4 id="searchHeader">Search for a City:</h4>
+            <input type="text" id="cityInput" placeholder="San Diego">
+            <button id="searchBtn">Search</button>
+          </label>
+        </form>
+        <hr/>
+        
+    </div>
+
+    <div id="resultArea">
+      
+      <div id="forecast"></div>
+      <div class="card">
+        <div class="forecastCard"></div>
+        <div class="forecastCard"></div>
+        <div class="forecastCard"></div>
+        <div class="forecastCard"></div>
+        <div class="forecastCard"></div>
+      </div>
+    </div>
+    
+  </div>
+
+</body>
+</html>
