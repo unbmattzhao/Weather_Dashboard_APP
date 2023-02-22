@@ -76,3 +76,12 @@ header{
 .currentCity{
   border: solid 2px gray;
 }
+
+.city-today{
+  border: 1px solid var(--backround1);
+}
+
+.result-display{
+  margin: 1rem;  
+  /* background-color: red; */
+}

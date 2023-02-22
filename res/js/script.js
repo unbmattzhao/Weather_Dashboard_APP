@@ -71,7 +71,9 @@ var getCityData = function (cityName) {
                    i++;
                 }}
               }           
-              else{displayWhetherData(cityName)}
+              else{ var stateName = data[0].state;           
+              displayWhetherData(cityName, stateName)}
+                
             }
         })
       }
@@ -80,8 +82,8 @@ var getCityData = function (cityName) {
 
 searchFormEl.addEventListener('submit', formSubmitHandler);        
 
-var displayWhetherData = function(cityName){
-  var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
+var displayWhetherData = function(cityName, stateName){
+  var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',' +stateName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
   fetch(apiUrl)
   .then(function(response){    
     response.json()
@@ -91,7 +93,7 @@ var displayWhetherData = function(cityName){
       console.log(latInfo);
       console.log(lonInfo);
 
-      var weatherApi = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latInfo + '&lon='+ lonInfo + '&appid=bc84f0272f6199c407b3c9dd27ba32b9';
+      var weatherApi = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latInfo + '&lon='+ lonInfo + '&appid=bc84f0272f6199c407b3c9dd27ba32b9';
       fetch(weatherApi)
       .then(function(response){
         if(response.ok){
@@ -99,15 +101,22 @@ var displayWhetherData = function(cityName){
             resultAreaEl.textContent = "";
             console.log(weather);
             var cityToday = document.createElement('div');
-            cityToday.setAttribute('class', 'city-today');
-            cityToday.textContent = weather.city.name;
+            cityToday.classList.add('city-today', 'result-display');
+
+            cityToday.textContent = weather.name + weather.weather[0];
+
             resultAreaEl.appendChild(cityToday);
+
+            var forecastTitle = document.createElement('h4');
+            forecastTitle.textContent = "5-Day Forecast:"
+            forecastTitle.classList.add('forecast-title', 'result-display');
+            resultAreaEl.appendChild(forecastTitle);
           }
           )
 
         }else{
-          // resultAreaEl.textContent = "";
-          // resultAreaEl.textContent = "No Data Available";
+          resultAreaEl.textContent = "";
+          resultAreaEl.textContent = "No Data Available";
         }
       }).then()
 
