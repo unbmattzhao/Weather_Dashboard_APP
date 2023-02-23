@@ -25,7 +25,7 @@
         
           displayWhetherData(data, cityName);
 
-
+// github
 
 // with the fetched data and the input username, create 
 var displayWhetherData = function (weatherData) {
