@@ -1,3 +1,9 @@
+# This is another version of the app, to solve the problem of the cities with same names
+### Basic solution is to add state information, to identify different cities with same names
+### This solution can not solve the problem where cities in the same state with same names, if any, or cities from different countries. But this app is limited to the country of USA, so I only set another parameter, which is the state name.
+
+### This app can be expanded to the whole world and the cities with same names in the same state in USA, or in different countries can be solved, but it is time-consuming, I do want to do it for now.
+
 # 06 Server-Side APIs: Weather Dashboard
 
 ## Your Task
