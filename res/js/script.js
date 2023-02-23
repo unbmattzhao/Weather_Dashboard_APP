@@ -79,7 +79,7 @@ var getCityData = function (cityName) {
       }
   })
 }
-
+// This is to test GitHub
 searchFormEl.addEventListener('submit', formSubmitHandler);        
 
 var displayWhetherData = function(cityName, stateName){
