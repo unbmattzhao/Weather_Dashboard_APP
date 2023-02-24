@@ -7,4 +7,14 @@
   ###### If the input area is blank, an alert will show up, advise the user to input a city name.
   ###### If there is no weather data for the city, or if it is a wrong city name, a message will show up on the page, advise the user there is no data.
 
-## 
+##  Links
+
+###### The App https://unbmattzhao.github.io/Weather_Dashboard_APP/
+###### The code https://github.com/unbmattzhao/Weather_Dashboard_APP
+
+## Screenshot
+
+![The App screenshots](./res/img/01.png "Weather Dashboard 01")
+![The App screenshots](./res/img/02.png "Weather Dashboard 02")
+![The App screenshots](./res/img/03.png "Weather Dashboard 03")
+![The App screenshots](./res/img/04.png "Weather Dashboard 04")
