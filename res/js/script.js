@@ -13,7 +13,7 @@ var formSubmitHandler = function(event) {
   var cityName = cityInputEl.value.trim();
 // * if user input a city name, go with the function 
   if (cityName) {
-    getCityData(cityName);
+    displayWhetherData(cityName);
       // * clear the user input area for next input
       cityInputEl.value = '';
       
@@ -23,113 +23,160 @@ var formSubmitHandler = function(event) {
   }
 };
 
-var getCityData = function (cityName) {
-  var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
- fetch(apiUrl)
-  // * create a function to check whether there is a response with the fetch API method, and take actions when there is/not a response.
-  
-  .then(function (response) 
-  {
-  // * response.ok is the same as response.status === 200  
-  if (response.ok) 
-    {
-    //* check the city information as there maybe 1. no city information 2. more than one cities with the same name 3. only one city
-      response.json().then(function(data){
-        console.log(data);
-        //* if the city is not found, return a message to the user, and it will not add this city name to the localStorage;
-        if(data.length === 0){
-          resultAreaEl.textContent = 'No weather data found.'
-          // ! no idea whether I need this return, seems not functional;
-          return;
-        }
-        else {
-          // * add city name to the searched list
-          localStorage.setItem('cities', cityName);
-          const savedInput = localStorage.getItem('cities');
-          // show the input data if there is data stored in the localStorage
-          if (savedInput) {
-            var citySearchedListEl = document.createElement('div');
-            citySearchedListEl.setAttribute('id', 'citySearchedList');
-            searchAreaEl.appendChild(citySearchedListEl);
-            citySearchedListEl.textContent = savedInput;}
-            // list the cities, but no more than first five with the same name for further option
-            if(data.length >1 ){
-              resultAreaEl.textContent="";
-              variableBuilder()
-              function variableBuilder() {
-                let i = 0;
-                while (i < data.length) {
-                   var city = data[i].name;  
-                   var state = data[i].state;   
-                   var cityFound = document.createElement('div');
-                   cityFound.setAttribute('class', 'city-state'); 
-                   cityFound.textContent = "City name: " + city + ";   " + "State name: " + state + "."     
-                   resultAreaEl.appendChild(cityFound);    
-  
-                   // variable can even be reassigned here`
-                   console.log(city + " " + state);
-                   i++;
-                }}
-              }           
-              else{ var stateName = data[0].state;           
-              displayWhetherData(cityName, stateName)}
-                
-            }
-        })
-      }
-  })
-}
+
 // This is to test GitHub
 searchFormEl.addEventListener('submit', formSubmitHandler);        
 
-var displayWhetherData = function(cityName, stateName){
-  var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + ',' +stateName + ',us&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
+var displayWhetherData = function(cityName){
+  var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + ',us&units=imperial&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
   fetch(apiUrl)
   .then(function(response){    
-    response.json()
-    .then((function(data){      
-      var latInfo = data[0].lat;
-      var lonInfo = data[0].lon;
-      console.log(latInfo);
-      console.log(lonInfo);
+         if(response.ok){
+          if(response.length === 0){
+            resultAreaEl.textContent = 'No weather data found.'
+            // ! no idea whether I need this return, seems not functional;
+            return;
+          }
+          else {
+            // * add city name to the searched list
+            localStorage.setItem('cities', cityName);
+            const savedInput = localStorage.getItem('cities');
+            // show the input data if there is data stored in the localStorage
+            if (savedInput) {
+              var citySearchedListEl = document.createElement('div');
+              citySearchedListEl.setAttribute('id', 'citySearchedList');
+              searchAreaEl.appendChild(citySearchedListEl);
+              citySearchedListEl.textContent = savedInput;}
 
-      var weatherApi = 'https://api.openweathermap.org/data/2.5/weather?lat=' + latInfo + '&lon='+ lonInfo + '&appid=bc84f0272f6199c407b3c9dd27ba32b9';
-      fetch(weatherApi)
-      .then(function(response){
-        if(response.ok){
           response.json().then(function(weather){
             resultAreaEl.textContent = "";
             console.log(weather);
+            
             var cityToday = document.createElement('div');
             cityToday.classList.add('city-today', 'result-display');
 
-            cityToday.textContent = weather.name + weather.weather[0];
+            // * to show today's date;
+            // var today = new Date();
+            // var dd = String(today.getDate()).padStart(2, '0');
+            // var mm = String(today.getMonth() + 1).padStart(1, '0'); 
+            // var yyyy = today.getFullYear();            
+            // today = mm + '/' + dd + '/' + yyyy;
 
+            //! To convert the date milliseconds from the weather data object, use as a function;         
+           function theDayConverter(milliseconds){
+              const dateObject = new Date(milliseconds);
+              const month = dateObject.getMonth() + 1;
+              const day = dateObject.getDate();
+              const year = dateObject.getFullYear();
+              const theDay = `${month.toString().padStart(1, '0')}/${day.toString().padStart(2, '0')}/${year.toString()}`;
+              return theDay;
+              };
+  
+              var milliseconds0 = weather.dt*1000; 
+              var today = theDayConverter(milliseconds0);
+
+             
+            
+            cityToday.innerHTML = '<h2>' + weather.name + ' (' + today + ')' + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.weather[0].icon + ".png'></img>" +  '</h2>' 
+            + '<p class= "temp">' + 'Temp: ' + weather.main.temp + '&deg;F' + '</p>'
+            + '<p class= "temp">' + 'Wind: ' + weather.wind.speed + " MPH" + '</p>'
+            +'<p class= "temp">' + 'Humidity: ' +  weather.main.humidity + "%" + '</p>';
             resultAreaEl.appendChild(cityToday);
 
             var forecastTitle = document.createElement('h4');
             forecastTitle.textContent = "5-Day Forecast:"
             forecastTitle.classList.add('forecast-title', 'result-display');
             resultAreaEl.appendChild(forecastTitle);
+
+          });
+
+            
+            var apiUrlForecast = 'http://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&appid=bc84f0272f6199c407b3c9dd27ba32b9';
+            fetch(apiUrlForecast)
+              .then(function(response){    
+         if(response.ok){
+          response.json().then(function(weather){
+            console.log(weather);
+            
+            function theDayConverter(milliseconds){
+              const dateObject = new Date(milliseconds);
+              const month = dateObject.getMonth() + 1;
+              const day = dateObject.getDate();
+              const year = dateObject.getFullYear();
+              const theDay = `${month.toString().padStart(1, '0')}/${day.toString().padStart(2, '0')}/${year.toString()}`;
+              return theDay;
+              };
+  
+              var milliseconds1 = weather.list[3].dt*1000; 
+              var day1 = theDayConverter(milliseconds1);
+              
+              var milliseconds2 = weather.list[11].dt*1000; 
+              var day2 = theDayConverter(milliseconds2);
+
+              var milliseconds3 = weather.list[20].dt*1000; 
+              var day3 = theDayConverter(milliseconds3);
+
+              var milliseconds4 = weather.list[30].dt*1000; 
+              var day4 = theDayConverter(milliseconds4);
+              
+              var milliseconds5 = weather.list[39].dt*1000; 
+              var day5 = theDayConverter(milliseconds5);
+              
+              var forecastFiveDay = document.createElement('div');
+              forecastFiveDay.classList.add('result-display','fiveDay');
+              
+              var fiveDay1= document.createElement('div');
+              var fiveDay2= document.createElement('div');
+              var fiveDay3= document.createElement('div');
+              var fiveDay4= document.createElement('div');
+              var fiveDay5= document.createElement('div');
+              forecastFiveDay.appendChild(fiveDay1);
+              forecastFiveDay.appendChild(fiveDay2);
+              forecastFiveDay.appendChild(fiveDay3);
+              forecastFiveDay.appendChild(fiveDay4);
+              forecastFiveDay.appendChild(fiveDay5);
+              fiveDay1.classList.add('result-display', 'Card');
+              fiveDay2.classList.add('result-display', 'Card');
+              fiveDay3.classList.add('result-display', 'Card');
+              fiveDay4.classList.add('result-display', 'Card');
+              fiveDay5.classList.add('result-display', 'Card');
+     
+              
+              fiveDay1.innerHTML = '<h4>' + day1 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[3].weather[0].icon + ".png'></img>" + "<br>"   
+              + '<p class= "temp">' + 'Temp: ' + weather.list[3].main.temp + '&deg;F' + '</p>'+ "<br>" 
+              + '<p class= "temp">' + 'Wind: ' + weather.list[3].wind.speed + " MPH" + '</p>'+ "<br>" 
+              +'<p class= "temp">' + 'Humidity: ' +  weather.list[3].main.humidity + "%" + '</p>';
+
+              fiveDay2.innerHTML =  '<h4>' + day2 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[11].weather[0].icon + ".png'></img>" + "<br>"   
+              + '<p class= "temp">' + 'Temp: ' + weather.list[11].main.temp + '&deg;F' + '</p>'+ "<br>" 
+              + '<p class= "temp">' + 'Wind: ' + weather.list[11].wind.speed + " MPH" + '</p>'+ "<br>" 
+              +'<p class= "temp">' + 'Humidity: ' +  weather.list[11].main.humidity + "%" + '</p>';
+              fiveDay3.innerHTML =  '<h4>' + day3 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[20].weather[0].icon + ".png'></img>" + "<br>"   
+              + '<p class= "temp">' + 'Temp: ' + weather.list[20].main.temp + '&deg;F' + '</p>'+ "<br>" 
+              + '<p class= "temp">' + 'Wind: ' + weather.list[20].wind.speed + " MPH" + '</p>'+ "<br>" 
+              +'<p class= "temp">' + 'Humidity: ' +  weather.list[20].main.humidity + "%" + '</p>';
+              fiveDay4.innerHTML =  '<h4>' + day4 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[30].weather[0].icon + ".png'></img>" + "<br>"   
+              + '<p class= "temp">' + 'Temp: ' + weather.list[30].main.temp + '&deg;F' + '</p>'+ "<br>" 
+              + '<p class= "temp">' + 'Wind: ' + weather.list[30].wind.speed + " MPH" + '</p>'+ "<br>" 
+              +'<p class= "temp">' + 'Humidity: ' +  weather.list[3].main.humidity + "%" + '</p>';
+              fiveDay5.innerHTML =  '<h4>' + day5 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[39].weather[0].icon + ".png'></img>" + "<br>"   
+              + '<p class= "temp">' + 'Temp: ' + weather.list[39].main.temp + '&deg;F' + '</p>'+ "<br>" 
+              + '<p class= "temp">' + 'Wind: ' + weather.list[39].wind.speed + " MPH" + '</p>'+ "<br>" 
+              +'<p class= "temp">' + 'Humidity: ' +  weather.list[39].main.humidity + "%" + '</p>';
+                 
+          
+     
+              resultAreaEl.appendChild(forecastFiveDay);
+          })
+         };
+
           }
           )
 
-        }else{
+        }}else{
           resultAreaEl.textContent = "";
           resultAreaEl.textContent = "No Data Available";
         }
       }).then()
 
-
-
-    }));    
-  })
-
-  // ?? Why this outsider .then is not working?
-  // .then(function(data){   
-  //   var latInfo = data[0].lat;
-  //   var lonInfo = data[0].lon;
-  //   console.log(latInfo);
-  //   console.log(lonInfo);})
-}
-
+    };    

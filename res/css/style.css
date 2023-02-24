@@ -64,6 +64,8 @@ header{
 }
 
 #resultArea{
+  all: unset;
+  display: grid;
   margin-left: 1rem;
 }
 
@@ -74,17 +76,44 @@ header{
 }
 
 .currentCity{
+  
   border: solid 2px gray;
+  display: grid;
+  
 }
 
 .city-today{
+  /* all: unset; */
   border: 1px solid var(--backround1);
+  padding: 0.3rem;
 }
 
 .result-display{
+  /* all: unset; */
   margin: 1rem;  
+  display: grid;
   /* background-color: red; */
 }
 
+#img{
+  margin-bottom: -0.8rem;
+}
 
-/* Just to test GitHub */
+.temp{
+  margin: 0.5rem;
+}
+
+.fiveDay{
+  /* margin: 1rem; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  color: white;
+}
+
+.Card{
+  background-color: rgb(28, 31, 72);
+  display: flex;
+  margin: 0px;
+  flex-wrap: wrap;
+}
