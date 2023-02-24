@@ -37,7 +37,7 @@ var displayWhetherData = function(cityName){
             // ! no idea whether I need this return, seems not functional;
             return;
           }
-          else {
+          else {            
             // * add city name to the searched list
             localStorage.setItem('cities', cityName);
             const savedInput = localStorage.getItem('cities');
@@ -46,7 +46,17 @@ var displayWhetherData = function(cityName){
               var citySearchedListEl = document.createElement('div');
               citySearchedListEl.setAttribute('id', 'citySearchedList');
               searchAreaEl.appendChild(citySearchedListEl);
-              citySearchedListEl.textContent = savedInput;}
+              citySearchedListEl.textContent = savedInput;
+              
+              function savedCityForecast(event){
+                event.preventDefault();
+                var city = event.target.textContent;
+                displayWhetherData(city);
+                searchAreaEl.removeChild(citySearchedListEl);
+              };
+              citySearchedListEl.addEventListener('click', savedCityForecast);
+                          
+            }
 
           response.json().then(function(weather){
             resultAreaEl.textContent = "";
@@ -123,7 +133,7 @@ var displayWhetherData = function(cityName){
               var day5 = theDayConverter(milliseconds5);
               
               var forecastFiveDay = document.createElement('div');
-              forecastFiveDay.classList.add('result-display','fiveDay');
+              forecastFiveDay.classList.add('fiveDay');
               
               var fiveDay1= document.createElement('div');
               var fiveDay2= document.createElement('div');
@@ -142,29 +152,28 @@ var displayWhetherData = function(cityName){
               fiveDay5.classList.add('result-display', 'Card');
      
               
-              fiveDay1.innerHTML = '<h4>' + day1 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[3].weather[0].icon + ".png'></img>" + "<br>"   
+              fiveDay1.innerHTML = '<h4 class= "temp">' + day1 +  '</h4>' + "<br>" + "<img class='Image' src = 'https://openweathermap.org/img/wn/" + weather.list[3].weather[0].icon + ".png'></img>" + "<br>"   
               + '<p class= "temp">' + 'Temp: ' + weather.list[3].main.temp + '&deg;F' + '</p>'+ "<br>" 
               + '<p class= "temp">' + 'Wind: ' + weather.list[3].wind.speed + " MPH" + '</p>'+ "<br>" 
               +'<p class= "temp">' + 'Humidity: ' +  weather.list[3].main.humidity + "%" + '</p>';
 
-              fiveDay2.innerHTML =  '<h4>' + day2 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[11].weather[0].icon + ".png'></img>" + "<br>"   
+              fiveDay2.innerHTML =  '<h4 class= "temp">' + day2 +  '</h4>' + "<br>" + "<img class='Image' src = 'https://openweathermap.org/img/wn/" + weather.list[11].weather[0].icon + ".png'></img>" + "<br>"   
               + '<p class= "temp">' + 'Temp: ' + weather.list[11].main.temp + '&deg;F' + '</p>'+ "<br>" 
               + '<p class= "temp">' + 'Wind: ' + weather.list[11].wind.speed + " MPH" + '</p>'+ "<br>" 
               +'<p class= "temp">' + 'Humidity: ' +  weather.list[11].main.humidity + "%" + '</p>';
-              fiveDay3.innerHTML =  '<h4>' + day3 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[20].weather[0].icon + ".png'></img>" + "<br>"   
+              fiveDay3.innerHTML =  '<h4 class= "temp">' + day3 +  '</h4>' + "<br>" + "<img class='Image' src = 'https://openweathermap.org/img/wn/" + weather.list[20].weather[0].icon + ".png'></img>" + "<br>"   
               + '<p class= "temp">' + 'Temp: ' + weather.list[20].main.temp + '&deg;F' + '</p>'+ "<br>" 
               + '<p class= "temp">' + 'Wind: ' + weather.list[20].wind.speed + " MPH" + '</p>'+ "<br>" 
               +'<p class= "temp">' + 'Humidity: ' +  weather.list[20].main.humidity + "%" + '</p>';
-              fiveDay4.innerHTML =  '<h4>' + day4 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[30].weather[0].icon + ".png'></img>" + "<br>"   
+              fiveDay4.innerHTML =  '<h4 class= "temp">' + day4 +  '</h4>' + "<br>" + "<img class='Image' src = 'https://openweathermap.org/img/wn/" + weather.list[30].weather[0].icon + ".png'></img>" + "<br>"   
               + '<p class= "temp">' + 'Temp: ' + weather.list[30].main.temp + '&deg;F' + '</p>'+ "<br>" 
               + '<p class= "temp">' + 'Wind: ' + weather.list[30].wind.speed + " MPH" + '</p>'+ "<br>" 
               +'<p class= "temp">' + 'Humidity: ' +  weather.list[3].main.humidity + "%" + '</p>';
-              fiveDay5.innerHTML =  '<h4>' + day5 +  '</h4>' + "<br>" + "<img id='img' src = 'https://openweathermap.org/img/wn/" + weather.list[39].weather[0].icon + ".png'></img>" + "<br>"   
+              fiveDay5.innerHTML =  '<h4 class= "temp">' + day5 +  '</h4>' + "<br>" + "<img class='Image' src = 'https://openweathermap.org/img/wn/" + weather.list[39].weather[0].icon + ".png'></img>" + "<br>"   
               + '<p class= "temp">' + 'Temp: ' + weather.list[39].main.temp + '&deg;F' + '</p>'+ "<br>" 
               + '<p class= "temp">' + 'Wind: ' + weather.list[39].wind.speed + " MPH" + '</p>'+ "<br>" 
               +'<p class= "temp">' + 'Humidity: ' +  weather.list[39].main.humidity + "%" + '</p>';
-                 
-          
+                           
      
               resultAreaEl.appendChild(forecastFiveDay);
           })

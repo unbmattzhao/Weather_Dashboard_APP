@@ -2,10 +2,6 @@
   --primary:rgb(71, 124, 246);
   --backround1: #979797;
   --backround2: #15172d;
-  --tertiary: #788585;
-  --light-dark: #6f6866;
-  --dark: #38302e;
-  --border-radius: 0.3rem;
 }
 
 
@@ -42,6 +38,12 @@ header{
   border-radius: 3px;
 }
 
+#citySearchedList:hover{
+  background-color: #30313e;
+  color: wheat;
+  cursor: pointer;
+}
+
 #searchBtn{
   background-color: var(--primary);
   color: white;
@@ -76,7 +78,6 @@ header{
 }
 
 .currentCity{
-  
   border: solid 2px gray;
   display: grid;
   
@@ -104,16 +105,15 @@ header{
 }
 
 .fiveDay{
-  /* margin: 1rem; */
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   color: white;
 }
 
 .Card{
   background-color: rgb(28, 31, 72);
   display: flex;
-  margin: 0px;
+  font-size: 0.8em;
   flex-wrap: wrap;
+  margin: 10px;
+  padding: 5px;
 }
