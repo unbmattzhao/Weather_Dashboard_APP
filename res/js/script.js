@@ -101,7 +101,7 @@ var displayWhetherData = function(cityName){
           });
 
             
-            var apiUrlForecast = 'http://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&appid=bc84f0272f6199c407b3c9dd27ba32b9';
+            var apiUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&appid=bc84f0272f6199c407b3c9dd27ba32b9';
             fetch(apiUrlForecast)
               .then(function(response){    
          if(response.ok){
