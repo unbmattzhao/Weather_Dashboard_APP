@@ -2,6 +2,7 @@ var searchFormEl = document.querySelector('#searchForm');
 var cityInputEl = document.querySelector('#cityInput');
 var searchBtnEl = document.querySelector('#searchBtn');
 var searchAreaEl = document.querySelector('#searchArea')
+var citiesShowAreaEl = document.querySelector('.citiesShowArea');
 var resultAreaEl= document.querySelector('#resultArea');
 
 
@@ -9,51 +10,47 @@ var repoSearchTerm = document.querySelector('#repo-search-term');
 
 var formSubmitHandler = function(event) {
   event.preventDefault();
+  
   // * get the user's input value as data, delete all the spaces around 
   var cityName = cityInputEl.value.trim();
-// * if user input a city name, go with the function 
+  // * if user input a city name, go with the function 
   if (cityName) {
-    if(savedInput.includes(cityName)){
-      displayWhetherData()
-    };
-    
     displayWhetherData(cityName);
-    showCities();
-      // * clear the user input area for next input
-      cityInputEl.value = '';
-      
-      }else {
+    // * clear the user input area for next input
+    cityInputEl.value = '';
+    
+  }else {
     // * show an alert if the user does not input anything and clicks the button
     alert('Please enter a city name');
   }
 };
-
- var savedInput = JSON.parse(localStorage.getItem('cities')) || [];
-  console.log(savedInput);
-
-
-  showCities();
-    
-    function showCities(){
-      for(i=0; i<savedInput.length; i++){
-      var citySearchedListEl = document.createElement('div');
-      citySearchedListEl.textContent = "";
-      citySearchedListEl.setAttribute('class', 'citySearchedList');  
-      console.log(savedInput[i]);
-      citySearchedListEl.textContent = savedInput[i];    
-      searchAreaEl.appendChild(citySearchedListEl);
-      
-      function savedCityForecast(event){
-        event.preventDefault();
-        var city = event.target.textContent;
-        displayWhetherData(city);
-      };
-      citySearchedListEl.addEventListener('click', savedCityForecast);
-    };
-  };
-
-// This is to test GitHub
 searchFormEl.addEventListener('submit', formSubmitHandler);        
+showCities();
+
+function showCities(){
+
+  let savedInput = JSON.parse(localStorage.getItem('cities')) || [];  
+  console.log(savedInput);
+  for(i=0; i<savedInput.length; i++){
+  var citySearchedListEl = document.createElement('div');
+  citySearchedListEl.setAttribute('class', 'citySearchedList');  
+  console.log(savedInput[i]);
+  citySearchedListEl.textContent = savedInput[i];    
+  citiesShowAreaEl.appendChild(citySearchedListEl);
+  
+  
+// show weather data when the searched cities are clicked;
+citySearchedListEl.addEventListener('click', savedCityForecast);
+function savedCityForecast(event){
+  event.preventDefault();
+  var city = event.target.textContent;
+  displayWhetherData(city);
+  }};
+};
+    
+  
+  
+// This is to test GitHub
 
 
 
@@ -64,7 +61,9 @@ var displayWhetherData = function(cityName){
   var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + cityName + ',us&units=imperial&limit=5&appid=bc84f0272f6199c407b3c9dd27ba32b9'; 
   fetch(apiUrl)
   .then(function(response){    
+
          if(response.ok){
+         
                 // incase there is no weather data
                 if(response.length === 0){
                   resultAreaEl.textContent = 'No weather data found.'
@@ -79,6 +78,12 @@ var displayWhetherData = function(cityName){
                         if(!searchedCityList.includes(data.name)) {
                             searchedCityList.push(data.name);
                             localStorage.setItem('cities', JSON.stringify(searchedCityList));
+                            
+                            var savedInput = JSON.parse(localStorage.getItem('cities')) || [];
+                            console.log(savedInput);
+
+                            citiesShowAreaEl.innerHTML = "";
+                          showCities();
                           };    
                                     
                       // }
@@ -213,6 +218,7 @@ var displayWhetherData = function(cityName){
                 resultAreaEl.textContent = "";
                 resultAreaEl.textContent = "No Data Available";
               }
+              
       }).then()
 
     };    
