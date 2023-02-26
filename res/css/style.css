@@ -31,14 +31,14 @@ header{
   grid-template-columns: 30% 1fr;
 }
 
-#searchHeader, #cityInput, #searchBtn, hr, #citySearchedList{
+#searchHeader, #cityInput, #searchBtn, hr, .citySearchedList{
   display: flex;
   width:90%;
   margin: 0.4rem;
   border-radius: 3px;
 }
 
-#citySearchedList:hover{
+.citySearchedList:hover{
   background-color: #30313e;
   color: wheat;
   cursor: pointer;
@@ -57,7 +57,7 @@ header{
   cursor: pointer;
 }
 
-#citySearchedList, .city-state{
+.citySearchedList, .city-state{
   background-color: var(--backround1);
   justify-content: center;
   margin-top: 0.5rem;
