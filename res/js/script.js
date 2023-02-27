@@ -30,11 +30,11 @@ showCities();
 function showCities(){
 
   let savedInput = JSON.parse(localStorage.getItem('cities')) || [];  
-  console.log(savedInput);
+  // console.log(savedInput);
   for(i=0; i<savedInput.length; i++){
   var citySearchedListEl = document.createElement('div');
   citySearchedListEl.setAttribute('class', 'citySearchedList');  
-  console.log(savedInput[i]);
+  // console.log(savedInput[i]);
   citySearchedListEl.textContent = savedInput[i];    
   citiesShowAreaEl.appendChild(citySearchedListEl);
   
@@ -73,7 +73,7 @@ var displayWhetherData = function(cityName){
                 else {    
                         // * add city name to the searched list
                         response.json().then(function cityList(data){
-                          console.log(data);
+                          // console.log(data);
                           let searchedCityList = JSON.parse(localStorage.getItem('cities')) || [];
                         if(!searchedCityList.includes(data.name)) {
                             searchedCityList.push(data.name);
@@ -92,7 +92,7 @@ var displayWhetherData = function(cityName){
                     })
                         .then(function(data){
                         resultAreaEl.textContent = "";
-                        console.log(data);
+                        // console.log(data);
                         
                         var cityToday = document.createElement('div');
                         cityToday.classList.add('city-today', 'result-display');
@@ -133,7 +133,7 @@ var displayWhetherData = function(cityName){
                       });
 
                         
-                        var apiUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&appid=bc84f0272f6199c407b3c9dd27ba32b9';
+                        var apiUrlForecast = 'https://api.openweathermap.org/data/2.5/forecast?q='+ cityName + '&units=imperial&appid=bc84f0272f6199c407b3c9dd27ba32b9';
                         fetch(apiUrlForecast)
                           .then(function(response){    
                     if(response.ok){
